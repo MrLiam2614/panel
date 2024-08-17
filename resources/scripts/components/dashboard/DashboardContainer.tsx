@@ -32,6 +32,8 @@ export default () => {
     useEffect(() => {
         if (!servers) return;
 
+        console.log(servers);
+
         const sortedServers = servers.items.slice().sort((a, b) => {
             const aMatch = a.description.match(/^\[(\d+)\]/);
             const bMatch = b.description.match(/^\[(\d+)\]/);
