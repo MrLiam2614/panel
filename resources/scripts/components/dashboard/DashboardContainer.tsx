@@ -42,6 +42,8 @@ export default () => {
             const aNumber = aMatch ? parseInt(aMatch[1], 10) : Number.MAX_SAFE_INTEGER;
             const bNumber = bMatch ? parseInt(bMatch[1], 10) : Number.MAX_SAFE_INTEGER;
 
+            console.log(`a: ${aDescription} (${aNumber}), b: ${bDescription} (${bNumber})`);
+
             if (aNumber === bNumber) {
                 // Se i numeri sono uguali, ordina per nome
                 return a.name.localeCompare(b.name);
@@ -50,6 +52,7 @@ export default () => {
             return aNumber - bNumber;
         });
 
+        console.log("Sorted Servers:", sortedServers);
         servers.items = sortedServers;
 
         if (servers.pagination.currentPage > 1 && !servers.items.length) {
