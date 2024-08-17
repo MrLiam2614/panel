@@ -31,6 +31,19 @@ export default () => {
 
     useEffect(() => {
         if (!servers) return;
+
+        const sortedServers = servers.items.slice().sort((a, b) => {
+            const aMatch = a.description.match(/^\[(\d+)\]/);
+            const bMatch = b.description.match(/^\[(\d+)\]/);
+
+            const aNumber = aMatch ? parseInt(aMatch[1], 10) : Number.MAX_SAFE_INTEGER;
+            const bNumber = bMatch ? parseInt(bMatch[1], 10) : Number.MAX_SAFE_INTEGER;
+
+            return aNumber - bNumber;
+        });
+
+        servers.items = sortedServers;
+
         if (servers.pagination.currentPage > 1 && !servers.items.length) {
             setPage(1);
         }
