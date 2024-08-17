@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 
 interface RenderFuncProps<T> {
-    items: T[];
+    serverItem: T[];
     isLastPage: boolean;
     isFirstPage: boolean;
 }
@@ -45,7 +45,7 @@ function Pagination<T>({ data: { items, pagination }, onPageSelect, children }: 
 
     return (
         <>
-            {children({ items, isFirstPage, isLastPage })}
+            {children({ serverItem: items, isFirstPage, isLastPage })}
             {pages.length > 1 && (
                 <div css={tw`mt-4 flex justify-center`}>
                     {pages[0] > 1 && !isFirstPage && (

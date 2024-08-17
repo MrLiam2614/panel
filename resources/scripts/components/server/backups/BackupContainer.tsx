@@ -36,8 +36,8 @@ const BackupContainer = () => {
         <ServerContentBlock title={'Backups'}>
             <FlashMessageRender byKey={'backups'} css={tw`mb-4`} />
             <Pagination data={backups} onPageSelect={setPage}>
-                {({ items }) =>
-                    !items.length ? (
+                {({ serverItem }) =>
+                    !serverItem.length ? (
                         // Don't show any error messages if the server has no backups and the user cannot
                         // create additional ones for the server.
                         !backupLimit ? null : (
@@ -48,7 +48,7 @@ const BackupContainer = () => {
                             </p>
                         )
                     ) : (
-                        items.map((backup, index) => (
+                        serverItem.map((backup, index) => (
                             <BackupRow key={backup.uuid} backup={backup} css={index > 0 ? tw`mt-2` : undefined} />
                         ))
                     )

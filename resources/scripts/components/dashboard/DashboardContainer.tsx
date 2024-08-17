@@ -29,10 +29,12 @@ export default () => {
         () => getServers({ page, type: showOnlyAdmin && rootAdmin ? 'admin' : undefined })
     );
 
+    const [sortedServers, setSortedServers] = useState<Server[]>([]);
+
     useEffect(() => {
         if (!servers) return;
 
-        const sortedServers = servers.items.slice().sort((a, b) => {
+        const sorted = servers.items.slice().sort((a, b) => {
             const aDescription = a.description || '';
             const bDescription = b.description || '';
 
@@ -42,8 +44,6 @@ export default () => {
             const aNumber = aMatch ? parseInt(aMatch[1], 10) : Number.MAX_SAFE_INTEGER;
             const bNumber = bMatch ? parseInt(bMatch[1], 10) : Number.MAX_SAFE_INTEGER;
 
-            console.log(`a: ${aDescription} (${aNumber}), b: ${bDescription} (${bNumber})`);
-
             if (aNumber === bNumber) {
                 // Se i numeri sono uguali, ordina per nome
                 return a.name.localeCompare(b.name);
@@ -51,9 +51,7 @@ export default () => {
 
             return aNumber - bNumber;
         });
-
-        console.log("Sorted Servers:", sortedServers);
-        servers.items = sortedServers;
+        setSortedServers(sorted);
 
         if (servers.pagination.currentPage > 1 && !servers.items.length) {
             setPage(1);
@@ -89,10 +87,10 @@ export default () => {
             {!servers ? (
                 <Spinner centered size={'large'} />
             ) : (
-                <Pagination data={servers} onPageSelect={setPage}>
-                    {({ items }) =>
-                        items.length > 0 ? (
-                            items.map((server, index) => (
+                <Pagination data={{ items: sortedServers, pagination: servers.pagination }} onPageSelect={setPage}>
+                    {({ serverItem }) =>
+                        serverItem.length > 0 ? (
+                            serverItem.map((server, index) => (
                                 <ServerRow key={server.uuid} server={server} css={index > 0 ? tw`mt-2` : undefined} />
                             ))
                         ) : (
