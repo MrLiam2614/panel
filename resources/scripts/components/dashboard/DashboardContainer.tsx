@@ -32,14 +32,20 @@ export default () => {
     useEffect(() => {
         if (!servers) return;
 
-        console.log(servers);
-
         const sortedServers = servers.items.slice().sort((a, b) => {
-            const aMatch = a.description.match(/^\[(\d+)\]/);
-            const bMatch = b.description.match(/^\[(\d+)\]/);
+            const aDescription = a.description || '';
+            const bDescription = b.description || '';
+
+            const aMatch = aDescription.match(/^\[(\d+)\]/);
+            const bMatch = bDescription.match(/^\[(\d+)\]/);
 
             const aNumber = aMatch ? parseInt(aMatch[1], 10) : Number.MAX_SAFE_INTEGER;
             const bNumber = bMatch ? parseInt(bMatch[1], 10) : Number.MAX_SAFE_INTEGER;
+
+            if (aNumber === bNumber) {
+                // Se i numeri sono uguali, ordina per nome
+                return a.name.localeCompare(b.name);
+            }
 
             return aNumber - bNumber;
         });
